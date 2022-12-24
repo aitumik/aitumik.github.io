@@ -15,6 +15,9 @@ jobs:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+      - name: Update Hugo
+        run: git submodule update --init --recursive
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
@@ -22,11 +25,14 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo -D
+        run: hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.HUGO_SECRET }}
+          external_repository: aitumik/aitumik.github.io
+          keep_files: true
           publish_dir: ./public
+          cname: aitumik.github.io
