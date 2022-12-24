@@ -69,7 +69,7 @@ weight = 100
 
 [params]
 author = "Puppet"
-description = "Software Engineer | Computer Prorgrammer | Hacker"
+description = "Software Engineer | Computer Programmer | Hacker"
 keywords = "blog,developer,personal"
 img_home = "img/home-bg.jpg"
 img_404 = "img/404-bg.jpg"
