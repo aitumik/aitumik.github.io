@@ -51,8 +51,8 @@ name = "Archive"
 url = "/archive/"
 weight = 10
 [[menu.main]]
-identifier = "guide"
-name = "Guide"
+identifier = "projects"
+name = "Projects"
 url = "/series/themes-guide/"
 weight = 20
 [[menu.main]]
@@ -69,7 +69,7 @@ weight = 100
 
 [params]
 author = "Puppet"
-description = "Software Engineer | Computer Prorgrammer"
+description = "Software Engineer | Computer Prorgrammer | Hacker"
 keywords = "blog,developer,personal"
 img_home = "img/home-bg.jpg"
 img_404 = "img/404-bg.jpg"
