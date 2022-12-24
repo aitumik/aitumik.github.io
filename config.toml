@@ -1,4 +1,4 @@
-baseURL = 'https://aitumik.github.io'
+baseURL = ''
 languageCode = 'en-us'
 title = 'Nate'
 theme = 'puppet'
