@@ -2,7 +2,6 @@ baseURL = '/'
 languageCode = 'en-us'
 title = 'Nate'
 theme = 'puppet'
-publishDir = 'public'
 
 copyright = ""
 paginate = 3
