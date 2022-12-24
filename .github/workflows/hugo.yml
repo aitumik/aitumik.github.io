@@ -23,15 +23,12 @@ jobs:
 
       - name: Build
         run: hugo
-        with:
-          keep_files: true
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.HUGO_SECRET }}
-          keep_files: true
           publish_dir: ./public
           cname: aitumik.github.io
       
