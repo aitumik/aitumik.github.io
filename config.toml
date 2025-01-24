@@ -1,10 +1,10 @@
 baseURL = '/'
 languageCode = 'en-us'
-title = 'Nate'
+title = 'Nathan'
 theme = 'puppet'
 
 copyright = ""
-paginate = 3
+paginate = 10
 defaultContentLanguage = "en"
 
 hasCJKLanguage = true
@@ -63,8 +63,8 @@ weight = 100
 
 
 [params]
-author = "Nate"
-description = "Software Engineer | Hacker"
+author = "Nathan"
+description = "Engineer | Hacker | Philosopher"
 keywords = "blog,developer,personal"
 img_home = "img/home-bg.jpg"
 img_404 = "img/404-bg.jpg"
@@ -87,13 +87,3 @@ github = "aitumik"
 linkedin = "nathan_kimutai"
 rss = true
 
-# See https://giscus.app/
-[params.giscus]
-enable = false
-repo = "roninro/hugo-theme-puppet"
-repo_id = "R_kgDOHuvyhw"
-category = "General"
-category_id = "DIC_kwDOHuvyh84CQjDo"
-input_position = "top"
-theme = "light_tritanopia"
-lang = "en"

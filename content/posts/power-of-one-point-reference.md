@@ -1,10 +1,10 @@
 ---
 title: "Present of Presence"
 date: 2023-02-13T13:46:46+03:00
-draft: true
+draft: false
 ---
 
-## The Power of One Point of Reference: How to "Predict" the Future with Certainty
+## The Power of One Point of Reference
 
 We are constantly making decisions in our lives, from the simplest to the most complex. At any given moment in time, we have one point of reference to act upon and two to observe - the past and the future. Understanding this concept can help us make better decisions and predict the future with more accuracy.
 
