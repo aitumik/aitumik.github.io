@@ -60,5 +60,5 @@ individuals by orders of magnitude
 
 ## Conclusion
 
-To conclude, I think we shouldn't fear technology but adapt to it when nececcary and fast at that if we want to extend beyond the stars and 
+In conclusion, I think we shouldn't fear technology but adapt to it when nececcary and fast at that if we want to extend beyond the stars and 
 beyond the flesh
