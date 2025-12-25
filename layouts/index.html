@@ -1,0 +1,14 @@
+{{ define "main" }}
+<h1>Welcome to {{ .Site.Title }}</h1>
+<p>{{ .Site.Params.description }}</p>
+
+<h2>Recent Posts</h2>
+<ul>
+    {{ range first 10 (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+    <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <time>{{ .Date.Format "2006-01-02" }}</time>
+    </li>
+    {{ end }}
+</ul>
+{{ end }}
