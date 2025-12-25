@@ -1,7 +1,7 @@
 ---
 title: "Implementing a JPEG Encoder in Python (Part 1)"
 date: 2025-12-25T12:00:00+03:00
-draft: true
+draft: false
 summary: "A deep dive into the inner workings of JPEG compression, building an encoder from scratch in pure Python."
 ---
 
