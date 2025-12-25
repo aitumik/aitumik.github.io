@@ -1,7 +1,7 @@
 ---
 title: "Building a Convolutional Neural Network from Scratch with NumPy"
 date: 2025-12-25T12:30:00+03:00
-draft: false
+draft: true
 categories: ["Deep Learning", "Python", "NumPy", "Systems"]
 summary: "Understand the magic of ConvNets by building the forward pass layers purely in NumPy."
 ---

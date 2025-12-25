@@ -1,7 +1,7 @@
 ---
 title: "Digital Infrastructure"
 date: 2025-02-24T06:43:12+03:00
-draft: false
+draft: true
 ---
 
 ## Introduction

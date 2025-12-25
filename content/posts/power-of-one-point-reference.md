@@ -1,7 +1,7 @@
 ---
 title: "Present of Presence"
 date: 2023-02-13T13:46:46+03:00
-draft: false
+draft: true
 ---
 
 ## The Power of One Point of Reference
