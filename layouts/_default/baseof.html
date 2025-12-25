@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-    <nav>
-        <a href="/">Home</a>
-        {{ range .Site.Menus.main }}
-        <a href="{{ .URL }}">{{ .Name }}</a>
-        {{ end }}
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="/" class="nav-brand">Home</a>
+            <div class="nav-links">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}">{{ .Name }}</a>
+                {{ end }}
+            </div>
+        </div>
     </nav>
-    <hr>
-    {{ block "main" . }}{{ end }}
-    <hr>
-    <footer>
+
+    <main class="container">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer class="container">
+        <hr>
         <p>&copy; {{ now.Year }} {{ .Site.Params.author }}</p>
     </footer>
 </body>
+
 </html>

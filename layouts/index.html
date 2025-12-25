@@ -1,14 +1,13 @@
 {{ define "main" }}
-<h1>Welcome to {{ .Site.Title }}</h1>
-<p>{{ .Site.Params.description }}</p>
-
-<h2>Recent Posts</h2>
-<ul>
-    {{ range first 10 (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
-    <li>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        <time>{{ .Date.Format "2006-01-02" }}</time>
-    </li>
+<div class="post-list">
+    {{ range (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+    <div class="post-item">
+        <div class="post-meta">{{ .Date.Format "Jan 02, 2006" }}</div>
+        <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
+        <div class="post-summary">
+            {{ .Summary }}
+        </div>
+    </div>
     {{ end }}
-</ul>
+</div>
 {{ end }}
