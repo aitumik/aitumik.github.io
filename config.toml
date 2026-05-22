@@ -49,21 +49,31 @@ block = [['$$', '$$'], ['\\[', '\\]']]
 inline = [['$', '$'], ['\\(', '\\)']]
 
 [menu]
+
 [[menu.main]]
 identifier = "home"
 name = "Home"
 url = "/"
 weight = 10
+
 [[menu.main]]
 identifier = "projects"
 name = "Projects"
 url = "/projects/"
 weight = 20
+
+[[menu.main]]
+identifier = "research"
+name = "Research"
+url = "/research/"
+weight = 40
+
 [[menu.main]]
 identifier = "about"
 name = "About"
 url = "/about/"
 weight = 50
+
 [[menu.main]]
 identifier = "github"
 name = "Github"
