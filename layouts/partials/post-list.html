@@ -1,10 +1,11 @@
-{{- $pages := . -}}
+{{- $pages := .pages -}}
+{{- $level := .level | default 3 -}}
 <ul class="post-list">
     {{- range $pages }}
     <li class="post-item">
         <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
         <div class="post-body">
-            <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            <h{{ $level }} class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h{{ $level }}>
             {{- with .Params.summary }}
             <p class="post-summary">{{ . }}</p>
             {{- else }}

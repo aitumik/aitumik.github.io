@@ -34,10 +34,18 @@
   --space-2xl: 4rem;
 
   --radius: 10px;
-  --measure: 68ch;
-  --sidebar-w: 15rem;
-  --content-max: 46rem;
-  --shell-max: 68rem;
+  /* `ch` is the width of "0", which is wider than an average character, so this
+     lands at ~84 characters per line rather than 60.
+
+     There is deliberately ONE width here. The text column, the code blocks and
+     the header all resolve to the same content box, so the wordmark, the
+     paragraph text and the code's left edge all land on the same vertical line.
+     An earlier version gave text its own narrower measure and let code break
+     out to a wider shell; that produced a nav floating as an island inside the
+     bar, which read as broken. Keeping the nav at ~635px also leaves room for
+     the wordmark plus all six links on one row. */
+  --measure: 60ch;
+  --shell-max: 42rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -136,43 +144,64 @@ h1, h2, h3, h4 {
 
 /* ==========================================================================
    Layout
-   Mobile-first: single column, then sidebar at >= 900px.
+   Single column throughout: sticky header, centred content, quiet footer.
    ========================================================================== */
-.site-wrapper {
+.shell {
+  width: 100%;
   max-width: var(--shell-max);
   margin: 0 auto;
-  padding: var(--space-l) var(--space-m) var(--space-2xl);
-  display: grid;
-  gap: var(--space-xl);
-  grid-template-columns: 1fr;
+  padding: var(--space-l) var(--space-m) var(--space-xl);
 }
 
 main {
-  /* `min-width: 0` is required: without it a grid/flex child refuses to shrink
-     below its content width, which is what makes long code lines and tables
-     blow out the layout on narrow screens. */
+  /* `min-width: 0` matters once anything inside becomes a grid or flex item:
+     without it a child refuses to shrink below its content width, which is what
+     makes long code lines and tables blow out the layout on narrow screens. */
   min-width: 0;
 }
 
-.sidebar {
-  min-width: 0;
-  /* On phones the sidebar's children become grid items of .site-wrapper so the
-     social links and copyright can sit *below* the content instead of above it. */
-  display: contents;
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  /* Fades in only once content slides underneath, so the bar stays quiet. */
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-/* Reading order on phones: title, nav, content, social, copyright. */
-.site-header { order: 1; }
-.site-nav { order: 2; }
-main { order: 3; }
-.social-links { order: 4; }
-.site-footer { order: 5; }
+/* Solid background for browsers without backdrop-filter. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    backdrop-filter: saturate(180%) blur(10px);
+  }
+}
+
+.header-inner {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  /* Horizontal padding matches `.shell` exactly, so the wordmark and the nav
+     land on the same content edges as the article text and the code blocks. */
+  padding: var(--space-xs) var(--space-m);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  flex-wrap: wrap;
+}
 
 .site-title {
   margin: 0;
-  font-size: var(--step-2);
+  font-size: var(--step-1);
   font-weight: 700;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 .site-title a {
   display: inline-flex;
@@ -182,34 +211,50 @@ main { order: 3; }
   text-decoration: none;
 }
 
-.site-bio {
-  margin: var(--space-xs) 0 0;
-  color: var(--text-muted);
+/* Hamburger - only rendered once JS is confirmed available. */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 2.75rem;
+  padding: 0 var(--space-s);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+  color: var(--text);
+  font: inherit;
   font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.nav-toggle:hover {
+  border-color: var(--text-muted);
 }
 
-@media (min-width: 900px) {
-  .site-wrapper {
-    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
-    gap: var(--space-2xl);
-    padding: var(--space-xl) var(--space-l) var(--space-2xl);
-  }
-
-  .sidebar {
-    /* Desktop restores the real sidebar column. */
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-l);
-    position: sticky;
-    top: var(--space-xl);
-    /* Sticky sidebar must not outgrow the viewport on short screens. */
-    max-height: calc(100vh - var(--space-2xl));
-    overflow-y: auto;
-  }
-
-  /* Natural order again: sidebar left, content right. */
-  .site-header, .site-nav, main, .social-links, .site-footer { order: 0; }
+.nav-toggle-bars,
+.nav-toggle-bars::before,
+.nav-toggle-bars::after {
+  display: block;
+  width: 1.05rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
 }
+.nav-toggle-bars {
+  position: relative;
+}
+.nav-toggle-bars::before,
+.nav-toggle-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+.nav-toggle-bars::before { top: -6px; }
+.nav-toggle-bars::after { top: 6px; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { top: 0; transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { top: 0; transform: rotate(-45deg); }
 
 /* ==========================================================================
    Navigation
@@ -221,10 +266,12 @@ main { order: 3; }
   padding: 0;
 }
 
+.site-nav { min-width: 0; }
+
 .nav-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-m);
+  align-items: center;
+  gap: var(--space-xs) var(--space-s);
 }
 
 .nav-links a {
@@ -232,61 +279,108 @@ main { order: 3; }
   align-items: center;
   /* 44px keeps the row comfortably tappable on a phone. */
   min-height: 2.75rem;
+  padding: 0 var(--space-xs);
+  border-radius: var(--radius);
   color: var(--text);
   text-decoration: none;
   font-weight: 500;
+  white-space: nowrap;
 }
 .nav-links a:hover {
+  background: var(--bg-subtle);
   color: var(--accent);
-  text-decoration: underline;
+  text-decoration: none;
 }
 .nav-links a[aria-current="page"] {
   color: var(--accent);
+  background: var(--bg-subtle);
+}
+
+.nav-icon a {
+  padding: 0 var(--space-s);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Phones: the nav collapses behind the toggle. Without JS the `has-js` class is
+   never added, so the links stay visible and the site still works. */
+@media (max-width: 899px) {
+  .has-js .nav-toggle { display: inline-flex; }
+
+  .has-js .site-nav {
+    display: none;
+    order: 3;
+    flex-basis: 100%;
+    padding-bottom: var(--space-s);
+  }
+  .has-js .site-nav.is-open { display: block; }
+  /* The toggle sits outside the aligned rail, so it needs its own inset. */
+  .has-js .nav-toggle { margin-right: var(--space-m); }
+  .has-js .site-nav .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .has-js .site-nav .nav-links li + li {
+    border-top: 1px solid var(--border);
+  }
+  .has-js .site-nav .nav-links a {
+    width: 100%;
+    padding: 0 var(--space-s);
+  }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.footer-inner {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding: var(--space-l) var(--space-m) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+.footer-inner p { margin: 0; }
+
+.footer-tagline {
+  font-size: 0.9375rem;
 }
 
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-m);
-  font-size: 0.875rem;
+  gap: 0 var(--space-m);
 }
 .social-links a {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
-  padding-right: var(--space-xs);
   color: var(--text-muted);
   text-decoration: none;
 }
 .social-links a:hover {
   color: var(--accent);
   text-decoration: underline;
-}
-
-.site-footer {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-}
-.site-footer p {
-  margin: 0;
-}
-
-@media (min-width: 900px) {
-  .site-footer {
-    margin-top: auto;
-    padding-top: var(--space-m);
-    border-top: 1px solid var(--border);
-  }
-  .nav-links,
-  .social-links {
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-  /* Desktop is pointer-driven, so tighten back to a compact list. */
-  .nav-links a {
-    min-height: 0;
-    padding: var(--space-xs) 0;
-  }
 }
 
 /* ==========================================================================
@@ -392,6 +486,8 @@ main { order: 3; }
   list-style: none;
   margin: 0;
   padding: 0;
+  /* Titles plus summaries stay at a readable width even on a wide screen. */
+  max-width: 46rem;
 }
 
 .post-item {
@@ -622,8 +718,16 @@ a.tag:hover {
 /* ==========================================================================
    Prose (article body)
    ========================================================================== */
+/* One column, one width. Text, code, tables and images all fill the content
+   box, so nothing is inset relative to anything else. An earlier version
+   centred text at a narrower measure and let code break out past it; that
+   mismatch is what made the content look unaligned. */
 .prose {
-  max-width: var(--measure);
+  min-width: 0;
+}
+
+.prose > * {
+  min-width: 0;
 }
 
 .prose > *:first-child {

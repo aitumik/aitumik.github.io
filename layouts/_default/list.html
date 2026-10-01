@@ -8,7 +8,7 @@
 
 {{- $paginator := .Paginate .Data.Pages }}
 {{- if $paginator.Pages }}
-{{ partial "post-list.html" $paginator.Pages }}
+{{ partial "post-list.html" (dict "pages" $paginator.Pages "level" 2) }}
 {{ partial "pagination.html" . }}
 {{- else }}
 <p class="empty">Nothing here yet.</p>
