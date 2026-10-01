@@ -1,0 +1,68 @@
+# Data powering the portfolio at /projects/.
+# Edit this file to update the site - no templates required.
+
+skills:
+  - name: Languages
+    items:
+      - Go
+      - Python
+      - C
+      - Assembly
+      - SQL
+  - name: Systems
+    items:
+      - Linux internals
+      - RISC-V
+      - QEMU
+      - Bare-metal bring-up
+      - Embedded video
+  - name: Data & ML
+    items:
+      - NumPy
+      - Neural networks
+      - Signal & image processing
+  - name: Platform
+    items:
+      - Docker & OCI
+      - containerd
+      - OAuth 2.0
+      - GitHub Actions
+
+# Projects are rendered as cards on /projects/, newest first.
+# Required: name, description. Optional: repo, url, tags, year.
+projects:
+  - name: Scapegoauth
+    description: An OAuth 2 resource server protocol implementation in Go, built to understand how the spec actually behaves in practice.
+    repo: https://github.com/aitumik/scapegoauth
+    tags: [Go, OAuth 2.0]
+  - name: Snippetbox
+    description: A Go application for curating and organising code snippets, with storage, templating and server-side rendering.
+    repo: https://github.com/aitumik/snippetbox
+    url: https://aitumik-snippetbox.fly.dev/
+    tags: [Go, Web]
+  - name: Greenlight API
+    description: A small movies API covering the create, read and delete operations, written to get comfortable with API design.
+    repo: https://github.com/aitumik/greenlight
+    tags: [Go, API]
+  - name: Contributions to containerd
+    description: Open-source work on a widely used container runtime - reading unfamiliar Go code at scale and shipping changes upstream.
+    repo: https://github.com/containerd/containerd
+    tags: [Go, Open Source]
+
+# ---------------------------------------------------------------------------
+# TODO (you): replace these placeholder entries with your real history, or
+# delete the whole `experience:` key. Nothing here is published as fact until
+# you fill it in - the section is simply omitted when the list is empty.
+# ---------------------------------------------------------------------------
+experience:
+  - role: Software Engineer
+    org: Your company or organisation
+    period: 2024 - Present
+    points:
+      - Describe a responsibility or outcome you owned.
+      - Add a second bullet - keep it to one line each.
+  - role: Earlier role
+    org: Previous organisation
+    period: 2022 - 2024
+    points:
+      - What you built or fixed, and for whom.

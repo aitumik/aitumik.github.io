@@ -1,9 +1,19 @@
 {{ define "main" }}
-<article>
-    <h1>{{ .Title }}</h1>
-    <time>{{ .Date.Format "2006-01-02" }}</time>
+<article class="post">
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        <p class="article-meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+            {{- with .Params.summary }} &middot; <span class="article-summary">{{ . }}</span>{{ end }}
+        </p>
+        {{- if .Params.tags }}
+        <p class="post-tags">
+            {{- range .Params.tags }}<a class="tag" href="{{ (printf "/tags/%s/" (. | urlize)) | relURL }}">{{ . }}</a>{{ end }}
+        </p>
+        {{- end }}
+    </header>
 
-    <div>
+    <div class="prose">
         {{ .Content }}
     </div>
 </article>

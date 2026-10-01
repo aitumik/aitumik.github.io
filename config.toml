@@ -2,7 +2,6 @@ baseURL = '/'
 languageCode = 'en-us'
 title = 'Nathan'
 
-
 copyright = ""
 paginate = 10
 defaultContentLanguage = "en"
@@ -18,9 +17,8 @@ disqusShortname = ""
 googleAnalytics = ""
 
 [outputs]
-home = ["HTML", "JSON", "RSS"]
+home = ["HTML", "RSS"]
 
-# prevent build failures when using Hugo's template _internal/opengraph.html 
 [taxonomies]
 category = "categories"
 tag = "tags"
@@ -29,12 +27,13 @@ politics = "politics"
 
 [markup]
 [markup.highlight]
-noClasses = true
+noClasses = false
 codeFences = true
 guessSyntax = true
-lineNos = true
+lineNos = false
 lineNumbersInTable = false
-style = "tango"
+style = "nord"
+tabWidth = 4
 
 [markup.goldmark.renderer]
 unsafe = true
@@ -57,10 +56,16 @@ url = "/"
 weight = 10
 
 [[menu.main]]
-identifier = "projects"
-name = "Projects"
-url = "/projects/"
+identifier = "posts"
+name = "Writing"
+url = "/posts/"
 weight = 20
+
+[[menu.main]]
+identifier = "projects"
+name = "Portfolio"
+url = "/projects/"
+weight = 30
 
 [[menu.main]]
 identifier = "research"
@@ -69,14 +74,20 @@ url = "/research/"
 weight = 40
 
 [[menu.main]]
-identifier = "about"
-name = "About"
-url = "/about/"
+identifier = "archive"
+name = "Archive"
+url = "/archive/"
 weight = 50
 
 [[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 60
+
+[[menu.main]]
 identifier = "github"
-name = "Github"
+name = "GitHub"
 url = "https://github.com/aitumik"
 weight = 100
 
@@ -85,24 +96,13 @@ weight = 100
 author = "Nathan"
 description = "Engineer | Hacker | Philosopher"
 keywords = "blog,developer,personal"
-img_home = "img/home-bg.jpg"
-img_404 = "img/404-bg.jpg"
-
-useFaviconGenerator = true
-
-custom_js = []
-custom_css = [] # ["css/custom.css"]  Add your file to assets folder  [assets/css/custom.css]
-
-[params.sidebar]
-enable = true
-gravatarEmail = ""
-# Overwritten by your gravatar image if `gravatarEmail` is filled
-avatar = "img/home-bg.jpg"
-bio = "Star dust"
+# Sections shown on the homepage, in order.
+mainSections = ["posts"]
+# Shown in the homepage hero. Keep this short - it is the first thing a visitor reads.
+tagline = "I build systems close to the metal and write about what I learn along the way."
 
 [params.social]
 twitter = "aitumik"
 github = "aitumik"
 linkedin = "nathan_kimutai"
 rss = true
-

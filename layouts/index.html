@@ -1,13 +1,20 @@
 {{ define "main" }}
-<div class="post-list">
-    {{ range (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
-    <div class="post-item">
-        <div class="post-meta">{{ .Date.Format "Jan 02, 2006" }}</div>
-        <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
-        <div class="post-summary">
-            {{ .Summary }}
-        </div>
-    </div>
-    {{ end }}
-</div>
+<section class="hero">
+    <h1 class="hero-title">{{ .Site.Params.author }}</h1>
+    <p class="hero-tagline">{{ .Site.Params.tagline }}</p>
+    <p class="hero-actions">
+        <a class="button button-primary" href="{{ "/projects/" | relURL }}">See my work</a>
+        <a class="button" href="{{ "/posts/" | relURL }}">Read the blog</a>
+    </p>
+</section>
+
+{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+{{ $paginator := .Paginate $pages }}
+{{ if $paginator.Pages }}
+<h2 class="section-heading">Latest writing</h2>
+{{ partial "post-list.html" $paginator.Pages }}
+{{ partial "pagination.html" . }}
+{{ else }}
+<p>No posts published yet.</p>
+{{ end }}
 {{ end }}

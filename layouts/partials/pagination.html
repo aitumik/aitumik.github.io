@@ -1,0 +1,16 @@
+{{- $pag := .Paginator -}}
+{{- if gt $pag.TotalPages 1 }}
+<nav class="pagination" aria-label="Pagination">
+    <div class="pagination-slot">
+        {{- if $pag.HasPrev }}
+        <a class="pagination-link" href="{{ $pag.Prev.URL }}" rel="prev">&larr; Newer</a>
+        {{- end }}
+    </div>
+    <p class="pagination-status">Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}</p>
+    <div class="pagination-slot pagination-slot-end">
+        {{- if $pag.HasNext }}
+        <a class="pagination-link" href="{{ $pag.Next.URL }}" rel="next">Older &rarr;</a>
+        {{- end }}
+    </div>
+</nav>
+{{- end }}

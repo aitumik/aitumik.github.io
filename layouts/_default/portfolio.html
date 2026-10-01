@@ -1,0 +1,65 @@
+{{ define "main" }}
+{{- $data := index .Site.Data "portfolio" }}
+
+<section class="hero">
+    <h1 class="hero-title">{{ .Title }}</h1>
+    {{- with .Params.description }}<p class="hero-tagline">{{ . }}</p>{{ end }}
+    {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+</section>
+
+{{- with $data.projects }}
+<section aria-labelledby="projects-heading">
+    <h2 class="section-heading" id="projects-heading">Projects</h2>
+    <ul class="card-grid">
+        {{- range . }}
+        <li class="card">
+            <h3 class="card-title">
+                {{- $url := .url | default .repo }}
+                {{- if $url }}<a href="{{ $url }}" rel="noopener noreferrer">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}
+            </h3>
+            {{- with .description }}<p class="card-text">{{ . }}</p>{{ end }}
+            {{- with .tags }}
+            <p class="card-tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</p>
+            {{- end }}
+            {{- if .repo }}
+            <p class="card-links"><a href="{{ .repo }}" rel="noopener noreferrer">Source</a></p>
+            {{- end }}
+        </li>
+        {{- end }}
+    </ul>
+</section>
+{{- end }}
+
+{{- with $data.skills }}
+<section aria-labelledby="skills-heading">
+    <h2 class="section-heading" id="skills-heading">Skills</h2>
+    <dl class="skills">
+        {{- range . }}
+        <div class="skills-row">
+            <dt>{{ .name }}</dt>
+            <dd>{{ range $i, $s := .items }}{{ if $i }} &middot; {{ end }}{{ $s }}{{ end }}</dd>
+        </div>
+        {{- end }}
+    </dl>
+</section>
+{{- end }}
+
+{{- with $data.experience }}
+<section aria-labelledby="experience-heading">
+    <h2 class="section-heading" id="experience-heading">Experience</h2>
+    <ol class="timeline">
+        {{- range . }}
+        <li class="timeline-item">
+            <p class="timeline-role">{{ .role }}{{ with .org }} <span class="timeline-org">at {{ . }}</span>{{ end }}</p>
+            {{- with .period }}<p class="timeline-period">{{ . }}</p>{{ end }}
+            {{- with .points }}
+            <ul class="timeline-points">
+                {{- range . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+            {{- end }}
+        </li>
+        {{- end }}
+    </ol>
+</section>
+{{- end }}
+{{ end }}

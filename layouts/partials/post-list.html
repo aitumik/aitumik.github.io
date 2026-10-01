@@ -1,0 +1,21 @@
+{{- $pages := . -}}
+<ul class="post-list">
+    {{- range $pages }}
+    <li class="post-item">
+        <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+        <div class="post-body">
+            <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            {{- with .Params.summary }}
+            <p class="post-summary">{{ . }}</p>
+            {{- else }}
+            {{- if .Summary }}<p class="post-summary">{{ .Summary | plainify | truncate 180 }}</p>{{ end }}
+            {{- end }}
+            {{- if .Params.tags }}
+            <p class="post-tags">
+                {{- range .Params.tags }}<a class="tag" href="{{ (printf "/tags/%s/" (. | urlize)) | relURL }}">{{ . }}</a>{{ end }}
+            </p>
+            {{- end }}
+        </div>
+    </li>
+    {{- end }}
+</ul>

@@ -1,126 +1,880 @@
-/* Basic Clean Reset */
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f6f7f9;
+  --bg-inset: #f0f2f5;
+  --text: #16181d;
+  --text-muted: #5b6472;
+  --border: #e2e5ea;
+  --accent: #1a5fd6;
+  --accent-contrast: #ffffff;
+  /* Code stays dark in both colour schemes - see syntax.css for the palette. */
+  --code-bg: #2e3440;
+  --code-fg: #d8dee9;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 4px 12px rgba(16, 24, 40, 0.05);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Fluid type: min at 320px viewport, max at 1200px. */
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.125rem, 1.07rem + 0.28vw, 1.25rem);
+  --step-2: clamp(1.375rem, 1.27rem + 0.53vw, 1.625rem);
+  --step-3: clamp(1.75rem, 1.55rem + 1vw, 2.25rem);
+
+  --space-xs: 0.35rem;
+  --space-s: 0.7rem;
+  --space-m: 1.15rem;
+  --space-l: 1.75rem;
+  --space-xl: 2.75rem;
+  --space-2xl: 4rem;
+
+  --radius: 10px;
+  --measure: 68ch;
+  --sidebar-w: 15rem;
+  --content-max: 46rem;
+  --shell-max: 68rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --bg-subtle: #1b1e24;
+    --bg-inset: #21252c;
+    --text: #e6e8ec;
+    --text-muted: #9aa4b2;
+    --border: #2c313a;
+    --accent: #6ea8fe;
+    --accent-contrast: #0d1117;
+    --code-bg: #2e3440;
+    --code-fg: #d8dee9;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  /* Guards against any single wide element forcing a horizontal scrollbar. */
+  overflow-wrap: break-word;
 }
 
-/* Layout Container */
-.container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 1rem;
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
 }
 
-/* Navbar Styles */
-.navbar {
-    background-color: #0d6efd;
-    /* Bootstrap Primary Blue */
-    padding: 1rem 0;
-    color: white;
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
 }
 
-.navbar-container {
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* Keyboard-only users land here first. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: var(--space-s) var(--space-m);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-radius: 0 0 var(--radius) 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* ==========================================================================
+   Layout
+   Mobile-first: single column, then sidebar at >= 900px.
+   ========================================================================== */
+.site-wrapper {
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding: var(--space-l) var(--space-m) var(--space-2xl);
+  display: grid;
+  gap: var(--space-xl);
+  grid-template-columns: 1fr;
+}
+
+main {
+  /* `min-width: 0` is required: without it a grid/flex child refuses to shrink
+     below its content width, which is what makes long code lines and tables
+     blow out the layout on narrow screens. */
+  min-width: 0;
+}
+
+.sidebar {
+  min-width: 0;
+  /* On phones the sidebar's children become grid items of .site-wrapper so the
+     social links and copyright can sit *below* the content instead of above it. */
+  display: contents;
+}
+
+/* Reading order on phones: title, nav, content, social, copyright. */
+.site-header { order: 1; }
+.site-nav { order: 2; }
+main { order: 3; }
+.social-links { order: 4; }
+.site-footer { order: 5; }
+
+.site-title {
+  margin: 0;
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.site-title a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-bio {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 900px) {
+  .site-wrapper {
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+    gap: var(--space-2xl);
+    padding: var(--space-xl) var(--space-l) var(--space-2xl);
+  }
+
+  .sidebar {
+    /* Desktop restores the real sidebar column. */
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: var(--space-l);
+    position: sticky;
+    top: var(--space-xl);
+    /* Sticky sidebar must not outgrow the viewport on short screens. */
+    max-height: calc(100vh - var(--space-2xl));
+    overflow-y: auto;
+  }
+
+  /* Natural order again: sidebar left, content right. */
+  .site-header, .site-nav, main, .social-links, .site-footer { order: 0; }
 }
 
-.navbar a {
-    color: white;
-    text-decoration: none;
-    margin-left: 1.5rem;
-    font-weight: 500;
-}
-
-.navbar a:hover {
-    color: #e0e0e0;
-}
-
-.navbar .nav-brand {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-left: 0;
-    margin-right: auto;
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+.nav-links,
+.social-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links {
-    display: flex;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-m);
 }
 
-/* Main Content Spacing */
-main.container {
-    margin-top: 3rem;
-    /* More breathing room */
-    margin-bottom: 2rem;
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  /* 44px keeps the row comfortably tappable on a phone. */
+  min-height: 2.75rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.nav-links a[aria-current="page"] {
+  color: var(--accent);
 }
 
-/* Homepage Blog List */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-m);
+  font-size: 0.875rem;
+}
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-right: var(--space-xs);
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.social-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.site-footer {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.site-footer p {
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .site-footer {
+    margin-top: auto;
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--border);
+  }
+  .nav-links,
+  .social-links {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  /* Desktop is pointer-driven, so tighten back to a compact list. */
+  .nav-links a {
+    min-height: 0;
+    padding: var(--space-xs) 0;
+  }
+}
+
+/* ==========================================================================
+   Hero & page headers
+   ========================================================================== */
+.hero {
+  margin-bottom: var(--space-xl);
+}
+
+.hero-title {
+  margin: 0 0 var(--space-s);
+  font-size: var(--step-3);
+  letter-spacing: -0.025em;
+}
+
+.hero-tagline {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--text-muted);
+  font-size: var(--step-1);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  margin: var(--space-l) 0 0;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.button:hover {
+  border-color: var(--text-muted);
+  text-decoration: none;
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+.button-primary:hover {
+  filter: brightness(1.08);
+}
+
+.page-header {
+  margin-bottom: var(--space-xl);
+}
+.page-header h1 {
+  margin: 0;
+  font-size: var(--step-3);
+  letter-spacing: -0.025em;
+}
+.page-description {
+  margin: var(--space-s) 0 0;
+  color: var(--text-muted);
+  font-size: var(--step-1);
+  max-width: var(--measure);
+}
+
+.article-meta {
+  margin: var(--space-s) 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+.article-summary {
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+.section-heading {
+  margin: var(--space-2xl) 0 var(--space-m);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Post lists
+   ========================================================================== */
 .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .post-item {
-    margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-m) 0;
+  border-bottom: 1px solid var(--border);
+}
+.post-item:first-child {
+  padding-top: 0;
 }
 
-.post-meta {
-    color: #6c757d;
-    /* Muted gray */
-    font-size: 0.9rem;
-    margin-bottom: 0.2rem;
+.post-date {
+  flex: none;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.post-body {
+  min-width: 0;
 }
 
 .post-title {
-    display: block;
-    font-size: 1.25rem;
-    color: #0d6efd;
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-    font-weight: 400;
-    /* Regular weight based on image */
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
-
-.post-title:hover {
-    text-decoration: underline;
+.post-title a {
+  /* Block + padding gives the title a full-width, thumb-sized tap target. */
+  display: block;
+  padding: var(--space-s) 0;
+  color: inherit;
+  text-decoration: none;
+}
+.post-title a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .post-summary {
-    color: #212529;
+  margin: var(--space-xs) 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 640px) {
+  .post-item {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-l);
+  }
+  /* Date sits in its own rail so titles all align. */
+  .post-date {
+    flex: 0 0 7rem;
+  }
+  .post-summary {
     font-size: 1rem;
-    line-height: 1.5;
+  }
 }
 
-/* Content Styling (Images & Code) */
-article img {
-    max-width: 100%;
-    height: auto;
+.post-tags,
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: var(--space-s) 0 0;
+  font-size: 0.8125rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   Cards (portfolio projects)
+   ========================================================================== */
+.card-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-m);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 560px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  }
+}
+
+.card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-m);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+}
+
+.card-title {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+.card-title a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+.card-title a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.card-text {
+  margin: var(--space-s) 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.card-tags {
+  margin-top: auto;
+  padding-top: var(--space-s);
+}
+
+.card-links {
+  margin: var(--space-s) 0 0;
+  font-size: 0.875rem;
+}
+.card-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-right: var(--space-s);
+}
+
+/* ==========================================================================
+   Skills & timeline
+   ========================================================================== */
+.skills {
+  margin: 0;
+  display: grid;
+  gap: var(--space-s);
+}
+
+.skills-row {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.skills dt {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.skills dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 560px) {
+  .skills-row {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: var(--space-m);
+  }
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-l);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: var(--space-l);
+  border-left: 2px solid var(--border);
+}
+
+.timeline-role {
+  margin: 0;
+  font-weight: 600;
+}
+.timeline-org {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.timeline-period {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.timeline-points {
+  margin: var(--space-s) 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+.timeline-points li {
+  margin-bottom: var(--space-xs);
+}
+
+/* ==========================================================================
+   Prose (article body)
+   ========================================================================== */
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > *:first-child {
+  margin-top: 0;
+}
+
+.prose h2 {
+  margin: var(--space-xl) 0 var(--space-s);
+  font-size: var(--step-2);
+  letter-spacing: -0.02em;
+}
+.prose h3 {
+  margin: var(--space-l) 0 var(--space-s);
+  font-size: var(--step-1);
+}
+.prose h4 {
+  margin: var(--space-l) 0 var(--space-s);
+  font-size: 1rem;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 var(--space-m);
+}
+
+.prose li {
+  margin-bottom: var(--space-xs);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.35rem;
+}
+
+.prose blockquote {
+  margin: var(--space-l) 0;
+  padding: var(--space-s) var(--space-m);
+  border-left: 3px solid var(--accent);
+  background: var(--bg-subtle);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-muted);
+}
+
+.prose hr {
+  height: 1px;
+  margin: var(--space-xl) 0;
+  border: 0;
+  background: var(--border);
+}
+
+/* Images scale with the column instead of forcing overflow. */
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: var(--space-l) auto;
+  border-radius: var(--radius);
+}
+
+/* Wide tables scroll inside their own box rather than the page. */
+.prose table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: var(--space-l) 0;
+  font-size: 0.9375rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-xs) var(--space-s);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.prose thead th {
+  background: var(--bg-subtle);
+  font-weight: 600;
+}
+
+/* Inline code - same dark surface as blocks, so the two read as one system. */
+.prose code,
+.pagination code {
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+/* Fenced code: the highlight wrapper scrolls, the page never does. */
+.highlight {
+  margin: var(--space-l) 0;
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.highlight pre,
+.highlight pre.chroma {
+  margin: 0;
+  padding: var(--space-m);
+  overflow-x: auto;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  tab-size: 4;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fenced code only: let nested blocks fill the wrapper. */
+.prose pre code {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Chroma output uses classes now (see syntax.css), so highlighting is muted
+   and follows the nord palette rather than inline hardcoded colours. */
+.highlight .chroma .lnt,
+.highlight .chroma .ln {
+  color: #797d82;
+  margin-right: 0.75em;
+}
+.highlight .chroma .hl {
+  background: #3b4252;
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .highlight pre,
+  .highlight pre.chroma {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ==========================================================================
+   Pagination & taxonomies
+   ========================================================================== */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-l);
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+}
+
+.pagination-slot {
+  flex: 1 1 auto;
+}
+.pagination-slot-end {
+  text-align: right;
+}
+
+.pagination-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--space-xs) var(--space-m);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pagination-link:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.pagination-status {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    justify-content: space-between;
+  }
+  .pagination-status {
+    order: 3;
+    flex-basis: 100%;
+    text-align: center;
+  }
+}
+
+.term-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+}
+
+.term-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 2.5rem;
+  padding: var(--space-xs) var(--space-m);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-subtle);
+}
+
+.term-count {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A list item whose only content is a link is a standalone tap target, not an
+   inline one, so it needs thumb-sized height. Links that sit inside a sentence
+   are left alone. The wrapper variants cover labels wrapped in bold or italics. */
+.prose li > a:only-child,
+.prose li > strong > a:only-child,
+.prose li > b > a:only-child,
+.prose li > em > a:only-child,
+.prose li > span > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+@media print {
+  .sidebar,
+  .pagination,
+  .hero-actions,
+  .skip-link {
+    display: none;
+  }
+  .site-wrapper {
     display: block;
-    margin: 1.5rem 0;
-    border-radius: 4px;
-}
-
-article pre {
-    background-color: #f6f8fa;
-    padding: 1rem;
-    border-radius: 6px;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-    line-height: 1.45;
-}
-
-article code {
-    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-}
-
-footer {
-    padding: 2rem 0;
-    margin-top: 3rem;
-    border-top: 1px solid #eee;
-    color: #666;
+    padding: 0;
+    max-width: none;
+  }
+  .prose {
+    max-width: none;
+  }
 }
