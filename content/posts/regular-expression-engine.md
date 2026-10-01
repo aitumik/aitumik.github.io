@@ -1,7 +1,7 @@
 ---
 title: "Regular Expressions"
 date: 2023-02-04T00:41:46+03:00
-draft: false
+draft: true
 categories: ["Computer Science", "Theory"]
 summary: "An exploration of Regular Expressions, Finite Automata, and the connection between the two."
 ---

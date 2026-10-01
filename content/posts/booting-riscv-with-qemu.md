@@ -1,7 +1,7 @@
 ---
 title: "Booting a RISCV kernel using QEMU"
 date: 2026-01-28T12:02:00+03:00
-draft: false
+draft: true
 summary: "An overview of a RISCV boot process using QEMU"
 ---
 

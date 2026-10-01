@@ -1,7 +1,7 @@
 ---
 title: "Displaying a Video over RCA conector"
 date: 2026-01-02T09:39:00+03:00
-draft: false
+draft: true
 summary: "Learning about RCA ports and component videos"
 ---
 
