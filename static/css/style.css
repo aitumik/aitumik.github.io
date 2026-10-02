@@ -48,6 +48,15 @@
   --shell-max: 54rem;
 }
 
+/* Font scheme, switched from `font` in config.toml via the data-font attribute
+   on <html>. Options: "sans" (default) or "mono".
+
+   Must stay after the :root block above - an attribute selector and :root have
+   equal specificity, so source order is what decides. */
+[data-font="mono"] {
+  --font-sans: var(--font-mono);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #14161a;

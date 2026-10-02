@@ -82,6 +82,10 @@ weight = 60
 # The GitHub link is rendered as an icon outside the menu, see baseof.html.
 
 [params]
+# Body font for the whole site. One of:
+#   "sans" - the system sans stack (default)
+#   "mono" - the monospace stack, for everything
+font = "sans"
 author = "Nathan"
 description = "Engineer | Hacker | Philosopher"
 keywords = "blog,developer,personal"
