@@ -42,10 +42,10 @@
      paragraph text and the code's left edge all land on the same vertical line.
      An earlier version gave text its own narrower measure and let code break
      out to a wider shell; that produced a nav floating as an island inside the
-     bar, which read as broken. Keeping the nav at ~635px also leaves room for
+     bar, which read as broken. Keeping the nav at ~864px also leaves room for
      the wordmark plus all six links on one row. */
   --measure: 60ch;
-  --shell-max: 42rem;
+  --shell-max: 54rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -486,8 +486,6 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
-  /* Titles plus summaries stay at a readable width even on a wide screen. */
-  max-width: 46rem;
 }
 
 .post-item {
@@ -582,6 +580,7 @@ a.tag:hover {
 /* ==========================================================================
    Cards (portfolio projects)
    ========================================================================== */
+
 .card-grid {
   list-style: none;
   margin: 0;
@@ -593,7 +592,13 @@ a.tag:hover {
 
 @media (min-width: 560px) {
   .card-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

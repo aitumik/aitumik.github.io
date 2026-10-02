@@ -31,38 +31,59 @@ skills:
 # Projects are rendered as cards on /projects/, newest first.
 # Required: name, description. Optional: repo, url, tags, year.
 projects:
-  - name: Scapegoauth
-    description: An OAuth 2 resource server protocol implementation in Go, built to understand how the spec actually behaves in practice.
-    repo: https://github.com/aitumik/scapegoauth
-    tags: [Go, OAuth 2.0]
-  - name: Snippetbox
-    description: A Go application for curating and organising code snippets, with storage, templating and server-side rendering.
-    repo: https://github.com/aitumik/snippetbox
-    url: https://aitumik-snippetbox.fly.dev/
-    tags: [Go, Web]
-  - name: Greenlight API
+  - name: Movies API
     description: A small movies API covering the create, read and delete operations, written to get comfortable with API design.
     repo: https://github.com/aitumik/greenlight
     tags: [Go, API]
-  - name: Contributions to containerd
-    description: Open-source work on a widely used container runtime - reading unfamiliar Go code at scale and shipping changes upstream.
+  - name: Container Runtime
+    description: Upstream test coverage for the hostNetwork helper on Linux and Windows - 231 lines of tests merged into the 1.7 release by a maintainer.
+    url: https://github.com/containerd/containerd/pull/7984
     repo: https://github.com/containerd/containerd
-    tags: [Go, Open Source]
+    tags: [Go, Open Source, Testing]
+  - name: LogNet
+    description: A logging framework for Go - messages are produced and consumed over HTTP, with sinks for files, databases and external services.
+    repo: https://github.com/aitumik/lognet
+    tags: [Go, Logging]
+  - name: IoT Sensor Dashboard
+    description: A dashboard and API for temperature and humidity readings, fed by custom firmware on an ESP8266 reading a DHT11 sensor.
+    url: https://github.com/aitumik/firmware-api
+    repo: https://github.com/aitumik/firmware
+    tags: [C++, IoT, Embedded]
+  - name: MicroGrad
+    description: A NumPy tensor library - broadcasting, matmul, transpose, reshape and reductions, with a test suite. The beginnings of an autograd engine, built to learn deep learning from the inside.
+    repo: https://github.com/aitumik/likklegrad
+    tags: [Python, NumPy, Deep Learning]
+  - name: MediAlert
+    description: A medicine reminder app - a Flask and Docker service with a notifications UI for keeping track of ongoing medication.
+    tags: [Python, Flask, Docker]
+  - name: Reed-Solomon Codes
+    description: Error-correcting codes over GF(2^8), implemented from scratch - finite field arithmetic, generator polynomials and Berlekamp-Massey. Encoding works; correction is still in progress.
+    repo: https://github.com/aitumik/reed-solomon-code
+    tags: [Python, Coding Theory, Mathematics]
 
-# ---------------------------------------------------------------------------
-# TODO (you): replace these placeholder entries with your real history, or
-# delete the whole `experience:` key. Nothing here is published as fact until
-# you fill it in - the section is simply omitted when the list is empty.
-# ---------------------------------------------------------------------------
 experience:
+  - role: Full Stack Engineer
+    org: Briter
+    period: Mar 2023 - Jul 2024
+    points:
+      - Full-time, on-site in Nairobi.
+      - Worked across React.js and Go.
   - role: Software Engineer
-    org: Your company or organisation
-    period: 2024 - Present
+    org: Novek
+    period: Jan 2021 - Dec 2022
     points:
-      - Describe a responsibility or outcome you owned.
-      - Add a second bullet - keep it to one line each.
-  - role: Earlier role
-    org: Previous organisation
-    period: 2022 - 2024
+      - Designed, developed and tested software as a full-time engineer.
+      - Stack included Go and Python.
+  - role: Software Engineer
+    org: Deveint Ltd
+    period: Jan 2020 - Dec 2020
     points:
-      - What you built or fixed, and for whom.
+      - Spearheaded the design and development of a ride-booking Android application using Java.
+      - Used Flask and Google Cloud Platform alongside it.
+  - role: Software Engineer Intern
+    org: Twixt Technologies Ltd
+    period: Mar 2019 - Aug 2019
+    points:
+      - Built image processing with OpenCV to detect and process barcodes and QR codes.
+      - Designed and implemented capture of that data into an SQLite database.
+      - Integrated the image processing algorithms with the database management system.
